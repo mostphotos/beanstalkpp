@@ -1,0 +1,23 @@
+Beanstalk++ is a client library for the beanstalk protocol, based upon boost.
+
+The library is not feature complete yet, but the most commonly used functionality exists (putting
+and reserving jobs and so on). Functionality which exists in the library should be considered 
+stable, as it's used heavily in production environment.
+
+CMake is required to build the project.
+
+To compile:
+$ mkdir build
+$ cd build
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ make
+
+To utilize the library, follow these steps:
+- Include beanstalkpp.h in your files
+- Add the beanstalk++ dir to your include path when compiling
+- Add libbeanstalkpp.so to your makefile in the linker step
+
+For some examples of using the library, have a look at the programs in beanspeek.cpp, beansput.cpp,
+beansreserve.cpp and listtubes.cpp
+
+
