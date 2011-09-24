@@ -35,6 +35,9 @@ ADD_EXECUTABLE(
 )
 TARGET_LINK_LIBRARIES(beanspeek boost_iostreams boost_system beanstalkpp boost_regex)
 
+INSTALL(TARGETS beanstalkpp DESTINATION lib)
+INSTALL(DIRECTORY . DESTINATION include/beanstalk++ FILES_MATCHING PATTERN "*.h" PATTERN "beanstalkpp.h" EXCLUDE PATTERN "*~" EXCLUDE PATTERN "*.git*" EXCLUDE PATTERN "*build*" EXCLUDE)
+INSTALL(FILES "beanstalkpp.h" DESTINATION include)
 
 SET(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -g -O0")
 SET(CMAKE_CXX_FLAGS_RELEASE "-g0 -O2")
