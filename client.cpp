@@ -204,20 +204,24 @@ vector< string > Beanstalkpp::Client::listTubes() {
   size_t payloadSize = this->tokenStream.expectInt();
   this->tokenStream.expectEol();
   
-  boost::shared_ptr<char> payload(this->tokenStream.readChunk(payloadSize));
+  char* payload = this->tokenStream.readChunk(payloadSize);
   
-  const char *c = payload.get();
-  
-  string p;
-  p.assign(c, payloadSize);
-  size_t lastHit = 4; // We ignore the first four characters, which are "---\n"
-  for(size_t i = lastHit; i < p.size(); i++) {
-    if(c[i] == '\n') {
-      string str = p.substr(lastHit + 2, i - lastHit - 2);
-      
-      ret.push_back(str);
-      lastHit = i+1;
+  try {
+    string p;
+    p.assign(payload, payloadSize);
+    size_t lastHit = 4; // We ignore the first four characters, which are "---\n"
+    for(size_t i = lastHit; i < p.size(); i++) {
+      if(payload[i] == '\n') {
+        string str = p.substr(lastHit + 2, i - lastHit - 2);
+        
+        ret.push_back(str);
+        lastHit = i+1;
+      }
     }
+    delete[] payload;
+  } catch(...) {
+    delete[] payload;
+    throw;
   }
   
   return ret;
