@@ -86,10 +86,15 @@ unsigned int Beanstalkpp::TokenizedStream::expectInt() {
 
 void Beanstalkpp::TokenizedStream::expectEol() {
   char *buf = this->readChunk(2);
-  std::auto_ptr<char> ptr(buf);
   
-  if(buf[0] != '\r') throw ServerException(ServerException::BAD_FORMAT, "Expected \\r\\n");
-  if(buf[1] != '\n') throw ServerException(ServerException::BAD_FORMAT, "Expected \\r\\n");
+  try {
+    if(buf[0] != '\r') throw ServerException(ServerException::BAD_FORMAT, "Expected \\r\\n");
+    if(buf[1] != '\n') throw ServerException(ServerException::BAD_FORMAT, "Expected \\r\\n");
+    delete[] buf;
+  } catch(...) {
+    delete[] buf;
+    throw;
+  }
 }
 
 char* Beanstalkpp::TokenizedStream::readChunk ( size_t bytes ) {
