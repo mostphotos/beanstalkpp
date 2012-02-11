@@ -126,8 +126,9 @@ bool Beanstalkpp::Client::peekReady(Beanstalkpp::job_p_t& jobPtr) {
   job_id_t jobId;
   size_t payloadSize;
   char *payload;
+  std::stringstream s("peek-ready\r\n");
   
-  this->sendCommand(std::stringstream("peek-ready\r\n"));
+  this->sendCommand(s);
   
   std::string response = this->tokenStream.nextString();
   if(response.compare("NOT_FOUND") == 0) {
@@ -197,8 +198,9 @@ size_t Beanstalkpp::Client::watch(const std::string& tube) {
 
 vector< string > Beanstalkpp::Client::listTubes() {
   vector<string> ret;
+  stringstream s("list-tubes\r\n");
   
-  this->sendCommand(stringstream("list-tubes\r\n"));
+  this->sendCommand(s);
   
   this->tokenStream.expectString("OK");
   size_t payloadSize = this->tokenStream.expectInt();
