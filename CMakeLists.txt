@@ -4,7 +4,7 @@ PROJECT(beanstalkpp)
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-FIND_PACKAGE( Boost 1.48 COMPONENTS system filesystem regex iostreams REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS system filesystem regex iostreams REQUIRED )
 link_directories(${Boost_LIBRARY_DIR})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} )
