@@ -91,8 +91,9 @@ public:
     job_id_t jobId;
     size_t payloadSize;
     char *payload;
-    
-    this->sendCommand(std::stringstream("reserve\r\n"));
+    std::stringstream s("reserve\r\n");
+
+    this->sendCommand(s);
     
     this->tokenStream.expectString("RESERVED");
     jobId = this->tokenStream.expectInt();

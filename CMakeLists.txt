@@ -4,7 +4,11 @@ PROJECT(beanstalkpp)
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+FIND_PACKAGE( Boost COMPONENTS system filesystem regex iostreams REQUIRED )
+link_directories(${Boost_LIBRARY_DIR})
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 ADD_LIBRARY(
   beanstalkpp SHARED tokenizedstream.cpp serverexception.cpp exception.cpp client.cpp job.cpp 
@@ -13,29 +17,32 @@ ADD_LIBRARY(
 ADD_EXECUTABLE(
   test test.cpp
 )
-TARGET_LINK_LIBRARIES(test boost_iostreams boost_system beanstalkpp boost_regex pthread)
+TARGET_LINK_LIBRARIES(test ${Boost_LIBRARIES} beanstalkpp pthread)
 
 ADD_EXECUTABLE(
   beansreserve beansreserve.cpp
 )
-TARGET_LINK_LIBRARIES(beansreserve boost_iostreams boost_system beanstalkpp boost_regex pthread)
+TARGET_LINK_LIBRARIES(beansreserve ${Boost_LIBRARIES} beanstalkpp pthread)
 
 ADD_EXECUTABLE(
   beansput beansput.cpp
 )
-TARGET_LINK_LIBRARIES(beansput boost_iostreams boost_system beanstalkpp boost_regex pthread)
+TARGET_LINK_LIBRARIES(beansput ${Boost_LIBRARIES} beanstalkpp pthread)
 
 ADD_EXECUTABLE(
   listtubes listtubes.cpp
 )
-TARGET_LINK_LIBRARIES(listtubes boost_iostreams boost_system beanstalkpp boost_regex pthread)
+TARGET_LINK_LIBRARIES(listtubes ${Boost_LIBRARIES} beanstalkpp pthread)
 
 ADD_EXECUTABLE(
   beanspeek beanspeek.cpp
 )
-TARGET_LINK_LIBRARIES(beanspeek boost_iostreams boost_system beanstalkpp boost_regex pthread)
+TARGET_LINK_LIBRARIES(beanspeek ${Boost_LIBRARIES} beanstalkpp pthread)
 
 INSTALL(TARGETS beanstalkpp DESTINATION lib)
+if(APPLE)
+  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+endif(APPLE)
 INSTALL(DIRECTORY . DESTINATION include/beanstalk++ FILES_MATCHING PATTERN "*.h" PATTERN "beanstalkpp.h" EXCLUDE PATTERN "*~" EXCLUDE PATTERN "*.git*" EXCLUDE PATTERN "*build*" EXCLUDE)
 INSTALL(FILES "beanstalkpp.h" DESTINATION include)
 
