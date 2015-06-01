@@ -96,7 +96,7 @@ public:
     this->sendCommand(s);
     
     this->tokenStream.expectString("RESERVED");
-    jobId = this->tokenStream.expectInt();
+    jobId = this->tokenStream.expectULL();
     payloadSize = this->tokenStream.expectInt();
     this->tokenStream.expectEol();
     
@@ -138,7 +138,7 @@ public:
     std::string response = this->tokenStream.nextString();
     
     if(response.compare("RESERVED") == 0) {
-      jobId = this->tokenStream.expectInt();
+      jobId = this->tokenStream.expectULL();
       payloadSize = this->tokenStream.expectInt();
       this->tokenStream.expectEol();
       

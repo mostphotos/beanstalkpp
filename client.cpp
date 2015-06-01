@@ -72,7 +72,7 @@ int Beanstalkpp::Client::put(const std::string& data) {
   
   // "INSERTED <id>\r\n" and "BURIED <id>\r\n" are accepted commands
   if(reply.compare("INSERTED") == 0 || reply.compare("BURIED") == 0) {
-    unsigned int id = this->tokenStream.expectInt();
+    uint64_t id = this->tokenStream.expectULL();
     this->tokenStream.expectEol();
     
     return id;
@@ -137,7 +137,7 @@ bool Beanstalkpp::Client::peekReady(Beanstalkpp::job_p_t& jobPtr) {
   }
   
   if(response.compare("FOUND") == 0) {
-    jobId = this->tokenStream.expectInt();
+    jobId = this->tokenStream.expectULL();
     payloadSize = this->tokenStream.expectInt();
     this->tokenStream.expectEol();
     

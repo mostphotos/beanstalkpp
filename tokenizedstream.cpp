@@ -84,6 +84,17 @@ unsigned int Beanstalkpp::TokenizedStream::expectInt() {
   return ret;
 }
 
+uint64_t Beanstalkpp::TokenizedStream::expectULL() {
+  string s = this->nextString();
+  uint64_t ret;
+  
+  istringstream stream(s);
+  if(!(stream >> ret)) 
+    throw ServerException(ServerException::BAD_FORMAT, "Expected unsigned long long but got: " + s);
+  
+  return ret;
+}
+
 void Beanstalkpp::TokenizedStream::expectEol() {
   char *buf = this->readChunk(2);
   

@@ -23,6 +23,7 @@
 
 #include <boost/asio.hpp>
 #include <string>
+#include <cstdint>
 
 namespace Beanstalkpp {
 
@@ -63,6 +64,14 @@ public:
    * @throws ServerException If there are no more characters left in this token string
    */
   unsigned int expectInt();
+
+  /**
+   * Treat the next token as an unsigned long long and return it
+   * 
+   * @throws ServerException If the next token is not an unsigned long long 
+   * @throws ServerException If there are no more characters left in this token string
+   */
+  uint64_t expectULL();
   
   /**
    * Expects the next token to be \r\n
